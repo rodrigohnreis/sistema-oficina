@@ -8,8 +8,9 @@ from flask_login import LoginManager
 from flask_cors import CORS
 #from src.config import Config
 #from src.models import db, Usuario
-from config import Config
 from models import db, Usuario
+from config import Config
+
 
 def create_app():
     app = Flask(__name__, static_folder=os.path.join(os.path.dirname(__file__), 'static'))
