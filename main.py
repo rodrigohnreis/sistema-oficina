@@ -11,6 +11,7 @@ from flask_cors import CORS
 from models import db, Usuario
 from config import Config
 
+
 def create_app():
     app = Flask(__name__, static_folder=os.path.join(os.path.dirname(__file__), 'static'))
     app.config.from_object(Config)
@@ -30,14 +31,23 @@ def create_app():
         return Usuario.query.get(int(user_id))
     
     # Registrar blueprints
-    from src.routes.auth import auth_bp
-    from src.routes.dashboard import dashboard_bp
-    from src.routes.clientes import clientes_bp
-    from src.routes.materiais import materiais_bp
-    from src.routes.orcamentos import orcamentos_bp
-    from src.routes.ordens import ordens_bp
-    from src.routes.notas_fiscais import notas_fiscais_bp
-    from src.routes.relatorios import relatorios_bp
+  #  from src.routes.auth import auth_bp
+   # from src.routes.dashboard import dashboard_bp
+   # from src.routes.clientes import clientes_bp
+   # from src.routes.materiais import materiais_bp
+   # from src.routes.orcamentos import orcamentos_bp
+   # from src.routes.ordens import ordens_bp
+   # from src.routes.notas_fiscais import notas_fiscais_bp
+   # from src.routes.relatorios import relatorios_bp
+
+    from routes.auth import auth_bp
+    from routes.dashboard import dashboard_bp
+    from routes.clientes import clientes_bp
+    from routes.materiais import materiais_bp
+    from routes.orcamentos import orcamentos_bp
+    from routes.ordens import ordens_bp
+    from routes.notas_fiscais import notas_fiscais_bp
+    from routes.relatorios import relatorios_bp
     
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(dashboard_bp, url_prefix='/dashboard')
