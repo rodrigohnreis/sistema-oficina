@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Cancelar Ordem {{ ordem.numero_ordem }} - Lantercar{% endblock %}
+
+{% block page_title %}Cancelar Ordem de Serviço{% endblock %}
+
+{% block page_actions %}
+<a href="{{ url_for('ordens.visualizar', id=ordem.id) }}" class="btn btn-secondary">
+    <i class="bi bi-arrow-left"></i> Voltar
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="bi bi-x-circle"></i> Cancelar Ordem {{ ordem.numero_ordem }}
+                </h5>
+            </div>
+            <div class="card-body">
+                <!-- Resumo da ordem -->
+                <div class="alert alert-info">
+                    <h6><i class="bi bi-info-circle"></i> Resumo da Ordem</h6>
+                    <p><strong>Cliente:</strong> {{ ordem.orcamento.cliente.nome }}</p>
+                    <p><strong>Serviço:</strong> {{ ordem.orcamento.descricao_servico }}</p>
+                    <p><strong>Valor Total:</strong> R$ {{ "%.2f"|format(ordem.orcamento.valor_total) }}</p>
+                    <p class="mb-0"><strong>Data de Início:</strong> {{ ordem.data_inicio.strftime('%d/%m/%Y %H:%M') }}</p>
+                </div>
+                
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="motivo_cancelamento" class="form-label">Motivo do Cancelamento *</label>
+                        <textarea class="form-control" id="motivo_cancelamento" name="motivo_cancelamento" 
+                                  rows="4" placeholder="Descreva o motivo do cancelamento..." required></textarea>
+                        <div class="form-text">
+                            É obrigatório informar o motivo do cancelamento.
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-danger">
+                        <h6><i class="bi bi-exclamation-triangle"></i> Atenção</h6>
+                        <p class="mb-0">
+                            Ao cancelar esta ordem de serviço:
+                        </p>
+                        <ul class="mb-0 mt-2">
+                            <li>O status será alterado para "Cancelado"</li>
+                            <li>O contrato relacionado também será cancelado</li>
+                            <li>Nenhuma nota fiscal será gerada</li>
+                            <li>Esta ação não pode ser desfeita</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-danger" 
+                                onclick="return confirm('Tem certeza que deseja cancelar esta ordem de serviço?')">
+                            <i class="bi bi-x-circle"></i> Confirmar Cancelamento
+                        </button>
+                        <a href="{{ url_for('ordens.visualizar', id=ordem.id) }}" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Voltar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: lantercar
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --bind 0.0.0.0:$PORT wsgi:app
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: lantercar-db
+          property: connectionString
+
+databases:
+  - name: lantercar-db
+    databaseName: lantercar
+    user: lantercar_user
+

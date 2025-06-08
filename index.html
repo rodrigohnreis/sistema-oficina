@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Lantercar{% endblock %}
+
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<!-- Cards de estatísticas -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="card-title">{{ total_clientes }}</h4>
+                        <p class="card-text">Clientes</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="bi bi-people fs-1"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="{{ url_for('clientes.listar') }}" class="text-white text-decoration-none">
+                    Ver todos <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="card-title">{{ total_materiais }}</h4>
+                        <p class="card-text">Materiais</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="bi bi-box fs-1"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="{{ url_for('materiais.listar') }}" class="text-white text-decoration-none">
+                    Ver todos <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="card text-white bg-warning">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="card-title">{{ orcamentos_pendentes }}</h4>
+                        <p class="card-text">Orçamentos Pendentes</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="bi bi-file-text fs-1"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="{{ url_for('orcamentos.listar') }}" class="text-white text-decoration-none">
+                    Ver todos <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="card text-white bg-info">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="card-title">{{ ordens_em_andamento }}</h4>
+                        <p class="card-text">Ordens em Andamento</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="bi bi-gear fs-1"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="{{ url_for('ordens.listar') }}" class="text-white text-decoration-none">
+                    Ver todas <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Últimos orçamentos -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Últimos Orçamentos</h5>
+            </div>
+            <div class="card-body">
+                {% if ultimos_orcamentos %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Número</th>
+                                <th>Cliente</th>
+                                <th>Data</th>
+                                <th>Valor Total</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for orcamento in ultimos_orcamentos %}
+                            <tr>
+                                <td>{{ orcamento.numero_orcamento }}</td>
+                                <td>{{ orcamento.cliente.nome }}</td>
+                                <td>{{ orcamento.data_orcamento.strftime('%d/%m/%Y') }}</td>
+                                <td>R$ {{ "%.2f"|format(orcamento.valor_total) }}</td>
+                                <td>
+                                    {% if orcamento.status == 'pendente' %}
+                                        <span class="badge bg-warning">Pendente</span>
+                                    {% elif orcamento.status == 'aceito' %}
+                                        <span class="badge bg-success">Aceito</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">Rejeitado</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{{ url_for('orcamentos.visualizar', id=orcamento.id) }}" class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-eye"></i> Ver
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted text-center">Nenhum orçamento encontrado.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Ações rápidas -->
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Ações Rápidas</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <a href="{{ url_for('clientes.cadastrar') }}" class="btn btn-outline-primary w-100 mb-2">
+                            <i class="bi bi-person-plus"></i><br>
+                            Novo Cliente
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="{{ url_for('materiais.cadastrar') }}" class="btn btn-outline-success w-100 mb-2">
+                            <i class="bi bi-box"></i><br>
+                            Novo Material
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="{{ url_for('orcamentos.cadastrar') }}" class="btn btn-outline-warning w-100 mb-2">
+                            <i class="bi bi-file-plus"></i><br>
+                            Novo Orçamento
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="{{ url_for('relatorios.index') }}" class="btn btn-outline-info w-100 mb-2">
+                            <i class="bi bi-graph-up"></i><br>
+                            Relatórios
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

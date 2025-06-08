@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block title %}{{ material.nome }} - Lantercar{% endblock %}
+
+{% block page_title %}Visualizar Material{% endblock %}
+
+{% block page_actions %}
+<div class="btn-group">
+    <a href="{{ url_for('materiais.editar', id=material.id) }}" class="btn btn-warning">
+        <i class="bi bi-pencil"></i> Editar
+    </a>
+    <a href="{{ url_for('materiais.listar') }}" class="btn btn-secondary">
+        <i class="bi bi-arrow-left"></i> Voltar
+    </a>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i class="bi bi-box"></i> {{ material.nome }}
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <table class="table table-borderless">
+                            <tr>
+                                <th width="30%">Código:</th>
+                                <td><code>{{ material.codigo }}</code></td>
+                            </tr>
+                            <tr>
+                                <th>Nome:</th>
+                                <td>{{ material.nome }}</td>
+                            </tr>
+                            <tr>
+                                <th>Descrição:</th>
+                                <td>{{ material.descricao or 'Não informado' }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <table class="table table-borderless">
+                            <tr>
+                                <th width="40%">Preço Unitário:</th>
+                                <td><strong>R$ {{ "%.2f"|format(material.preco_unitario) }}</strong></td>
+                            </tr>
+                            <tr>
+                                <th>Unidade:</th>
+                                <td>{{ material.unidade_medida }}</td>
+                            </tr>
+                            <tr>
+                                <th>Estoque Atual:</th>
+                                <td>
+                                    <span class="badge bg-{{ 'danger' if material.quantidade_estoque <= 5 else 'success' }} fs-6">
+                                        {{ material.quantidade_estoque }} {{ material.unidade_medida }}
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Ajustar estoque -->
+        <div class="card mt-3">
+            <div class="card-header">
+                <h6 class="card-title mb-0">
+                    <i class="bi bi-arrow-up-down"></i> Ajustar Estoque
+                </h6>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('materiais.ajustar_estoque', id=material.id) }}" class="row g-3">
+                    <div class="col-md-6">
+                        <label for="nova_quantidade" class="form-label">Nova Quantidade</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="nova_quantidade" 
+                                   name="nova_quantidade" min="0" value="{{ material.quantidade_estoque }}" required>
+                            <span class="input-group-text">{{ material.unidade_medida }}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary" 
+                                onclick="return confirm('Tem certeza que deseja ajustar o estoque?')">
+                            <i class="bi bi-check"></i> Ajustar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="card-title mb-0">
+                    <i class="bi bi-info-circle"></i> Informações do Sistema
+                </h6>
+            </div>
+            <div class="card-body">
+                <table class="table table-borderless table-sm">
+                    <tr>
+                        <th>ID:</th>
+                        <td>{{ material.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>Cadastrado em:</th>
+                        <td>{{ material.data_cadastro.strftime('%d/%m/%Y %H:%M') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Usado em orçamentos:</th>
+                        <td>{{ material.itens_orcamento|length }} vez(es)</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
+        {% if material.quantidade_estoque <= 5 %}
+        <div class="card mt-3 border-warning">
+            <div class="card-header bg-warning text-dark">
+                <h6 class="card-title mb-0">
+                    <i class="bi bi-exclamation-triangle"></i> Atenção
+                </h6>
+            </div>
+            <div class="card-body">
+                <p class="mb-0">Este material está com estoque baixo ({{ material.quantidade_estoque }} {{ material.unidade_medida }}).</p>
+            </div>
+        </div>
+        {% endif %}
+        
+        <div class="card mt-3">
+            <div class="card-header">
+                <h6 class="card-title mb-0">
+                    <i class="bi bi-gear"></i> Ações
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('materiais.editar', id=material.id) }}" class="btn btn-warning">
+                        <i class="bi bi-pencil"></i> Editar Material
+                    </a>
+                    <a href="{{ url_for('materiais.excluir', id=material.id) }}" 
+                       class="btn btn-danger"
+                       onclick="return confirm('Tem certeza que deseja excluir este material?')">
+                        <i class="bi bi-trash"></i> Excluir Material
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Material - Lantercar{% endblock %}
+
+{% block page_title %}Editar Material{% endblock %}
+
+{% block page_actions %}
+<a href="{{ url_for('materiais.listar') }}" class="btn btn-secondary">
+    <i class="bi bi-arrow-left"></i> Voltar
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <form method="POST">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label for="nome" class="form-label">Nome do Material *</label>
+                                <input type="text" class="form-control" id="nome" name="nome" 
+                                       value="{{ material.nome }}" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="codigo" class="form-label">Código *</label>
+                                <input type="text" class="form-control" id="codigo" name="codigo" 
+                                       value="{{ material.codigo }}" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="descricao" class="form-label">Descrição</label>
+                        <textarea class="form-control" id="descricao" name="descricao" rows="3">{{ material.descricao or '' }}</textarea>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="preco_unitario" class="form-label">Preço Unitário *</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">R$</span>
+                                    <input type="number" class="form-control" id="preco_unitario" 
+                                           name="preco_unitario" step="0.01" min="0" 
+                                           value="{{ material.preco_unitario }}" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="quantidade_estoque" class="form-label">Quantidade em Estoque</label>
+                                <input type="number" class="form-control" id="quantidade_estoque" 
+                                       name="quantidade_estoque" min="0" 
+                                       value="{{ material.quantidade_estoque }}">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="unidade_medida" class="form-label">Unidade de Medida</label>
+                                <select class="form-select" id="unidade_medida" name="unidade_medida">
+                                    <option value="UN" {{ 'selected' if material.unidade_medida == 'UN' }}>Unidade (UN)</option>
+                                    <option value="KG" {{ 'selected' if material.unidade_medida == 'KG' }}>Quilograma (KG)</option>
+                                    <option value="L" {{ 'selected' if material.unidade_medida == 'L' }}>Litro (L)</option>
+                                    <option value="M" {{ 'selected' if material.unidade_medida == 'M' }}>Metro (M)</option>
+                                    <option value="M2" {{ 'selected' if material.unidade_medida == 'M2' }}>Metro Quadrado (M²)</option>
+                                    <option value="M3" {{ 'selected' if material.unidade_medida == 'M3' }}>Metro Cúbico (M³)</option>
+                                    <option value="PC" {{ 'selected' if material.unidade_medida == 'PC' }}>Peça (PC)</option>
+                                    <option value="CX" {{ 'selected' if material.unidade_medida == 'CX' }}>Caixa (CX)</option>
+                                    <option value="PCT" {{ 'selected' if material.unidade_medida == 'PCT' }}>Pacote (PCT)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check"></i> Salvar Alterações
+                        </button>
+                        <a href="{{ url_for('materiais.listar') }}" class="btn btn-secondary">
+                            <i class="bi bi-x"></i> Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="card-title mb-0">
+                    <i class="bi bi-info-circle"></i> Informações
+                </h6>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled mb-0">
+                    <li><strong>ID:</strong> {{ material.id }}</li>
+                    <li><strong>Cadastrado em:</strong> {{ material.data_cadastro.strftime('%d/%m/%Y %H:%M') }}</li>
+                    <li><strong>Código atual:</strong> {{ material.codigo }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}Cadastrar Material - Lantercar{% endblock %}
+
+{% block page_title %}Cadastrar Material{% endblock %}
+
+{% block page_actions %}
+<a href="{{ url_for('materiais.listar') }}" class="btn btn-secondary">
+    <i class="bi bi-arrow-left"></i> Voltar
+</a>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <form method="POST">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label for="nome" class="form-label">Nome do Material *</label>
+                                <input type="text" class="form-control" id="nome" name="nome" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="codigo" class="form-label">Código *</label>
+                                <input type="text" class="form-control" id="codigo" name="codigo" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="descricao" class="form-label">Descrição</label>
+                        <textarea class="form-control" id="descricao" name="descricao" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="preco_unitario" class="form-label">Preço Unitário *</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">R$</span>
+                                    <input type="number" class="form-control" id="preco_unitario" 
+                                           name="preco_unitario" step="0.01" min="0" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="quantidade_estoque" class="form-label">Quantidade em Estoque</label>
+                                <input type="number" class="form-control" id="quantidade_estoque" 
+                                       name="quantidade_estoque" min="0" value="0">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="unidade_medida" class="form-label">Unidade de Medida</label>
+                                <select class="form-select" id="unidade_medida" name="unidade_medida">
+                                    <option value="UN">Unidade (UN)</option>
+                                    <option value="KG">Quilograma (KG)</option>
+                                    <option value="L">Litro (L)</option>
+                                    <option value="M">Metro (M)</option>
+                                    <option value="M2">Metro Quadrado (M²)</option>
+                                    <option value="M3">Metro Cúbico (M³)</option>
+                                    <option value="PC">Peça (PC)</option>
+                                    <option value="CX">Caixa (CX)</option>
+                                    <option value="PCT">Pacote (PCT)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check"></i> Cadastrar
+                        </button>
+                        <a href="{{ url_for('materiais.listar') }}" class="btn btn-secondary">
+                            <i class="bi bi-x"></i> Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="card-title mb-0">
+                    <i class="bi bi-info-circle"></i> Informações
+                </h6>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled mb-0">
+                    <li><strong>Campos obrigatórios:</strong> marcados com *</li>
+                    <li><strong>Código:</strong> deve ser único no sistema</li>
+                    <li><strong>Preço:</strong> valor unitário do material</li>
+                    <li><strong>Estoque:</strong> quantidade atual disponível</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
