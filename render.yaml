@@ -3,7 +3,7 @@ services:
     name: lantercar
     env: python
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn --bind 0.0.0.0:$PORT wsgi:app
+    startCommand: gunicorn --chdir src --bind 0.0.0.0:$PORT main:app
     envVars:
       - key: FLASK_ENV
         value: production
