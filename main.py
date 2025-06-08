@@ -6,8 +6,10 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 from flask import Flask, send_from_directory, redirect, url_for
 from flask_login import LoginManager
 from flask_cors import CORS
-from src.config import Config
-from src.models import db, Usuario
+#from src.config import Config
+#from src.models import db, Usuario
+from models import db, Usuario
+from config import Config
 
 def create_app():
     app = Flask(__name__, static_folder=os.path.join(os.path.dirname(__file__), 'static'))
